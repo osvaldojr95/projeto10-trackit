@@ -1,19 +1,24 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-
-import Login from "./Login"
-import Cadastro from "./Cadastro"
+import { useState } from "react"
+import UserContext from "../contexts/UserContext"
+import CadastroTela from "./CadastroTela"
+import LoginTela from "./LoginTela"
+import HojeTela from "./HojeTela"
 
 export default function App() {
+    const [userInfo,setUserInfo] = useState({});
+
     return (
         <>
-            <main>
+            <UserContext.Provider value={{userInfo,setUserInfo}}>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/cadastro" element={<Cadastro />} />
+                        <Route path="/" element={<LoginTela />} />
+                        <Route path="/cadastro" element={<CadastroTela />} />
+                        <Route path="/hoje" element={<HojeTela />} />
                     </Routes>
                 </BrowserRouter>
-            </main>
+            </UserContext.Provider>
         </>
     )
 }

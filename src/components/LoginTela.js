@@ -1,42 +1,57 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import styled from "styled-components";
+import UserContext from "../contexts/UserContext";
 import LogoImg from "./../assets/logo.png";
 
-export default function Login() {
+export default function LoginTela() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const navigate = useNavigate();
 
   function fazerLogin(event) {
     event.preventDefault();
 
-    /*
-    const requisicao = axios.post("https://minha-api.com/login", {
-      email: email,
-      senha: senha
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+    const obj = { email: email, password: senha }
+    const promise = axios.post(URL, obj);
+    setLoading(true);
+    promise.then(response => {
+      setLoading(false);
+      const { data } = response;
+      const { name, id, image, token} = data;
+      setUserInfo({ ...userInfo, name, id, image, token })
+      navigate("/hoje");
     });
-
-    // ..
-    */
-
-    console.log("Fazer Login");
+    promise.catch(err => {
+      // 401 (Provavelmente email e senha errados)
+      setLoading(false);
+      console.log(err);
+    });
   }
 
   return (
     <Container>
-      <img src={LogoImg} alt="Logo" />
+      <img src={LogoImg} alt="Logo" onClick={()=>{console.log(userInfo)}}/>
       <h1>TrackIt</h1>
       <form onSubmit={fazerLogin}>
         <input
           type="email"
           value={email}
           placeholder="email"
+          required
+          disabled={loading}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           value={senha}
           placeholder="senha"
+          required
+          disabled={loading}
           onChange={(e) => setSenha(e.target.value)}
         />
         <button type="submit">Login</button>
