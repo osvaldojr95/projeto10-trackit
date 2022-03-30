@@ -2,19 +2,18 @@ import styled from "styled-components";
 import Header from "./Header"
 import Footer from "./Footer";
 
-export default function HojeTela() {
+export default function Histórico() {
     return (
         <Container>
             <Header />
-            <h5>Hoje</h5>
+            <h5>Histórico</h5>
             <span>
-                HOJEE!
+                Em breve você poderá ver o histórico dos seus hábitos aqui!
             </span>
             <Footer />
         </Container>
-    )
+    );
 }
-
 
 const Container = styled.footer`
     height: 100vh;

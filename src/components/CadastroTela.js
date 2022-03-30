@@ -20,7 +20,8 @@ export default function CadastroTela() {
     const promise = post(URL, obj);
     setLoading(true);
     promise.then(response => {
-      const { data } = response;
+      // ???
+      // const { data } = response;
       setLoading(false);
       navigate("/");
     });

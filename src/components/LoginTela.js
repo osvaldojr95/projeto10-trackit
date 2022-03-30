@@ -63,13 +63,14 @@ export default function LoginTela() {
   );
 }
 
-const Container = styled.div`
-  height: auto;
+const Container = styled.main`
+  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  background-color: var(--white);
 
   img {
     height: auto;
