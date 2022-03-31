@@ -54,7 +54,6 @@ const Container = styled.footer`
         position: absolute;
         top: -25px;
     }
-
     .CircularProgressbar-path {
         stroke: var(--white);
         stroke-linecap: round;

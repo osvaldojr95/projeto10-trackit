@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { useUser } from "../contexts/UserContext";
 import Header from "./Header"
 import Footer from "./Footer";
 
 export default function HojeTela() {
+    const { userInfo } = useUser();
     return (
         <Container>
             <Header />

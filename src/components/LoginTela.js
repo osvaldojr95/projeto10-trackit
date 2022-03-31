@@ -1,15 +1,15 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import UserContext from "../contexts/UserContext";
+import { useUser } from "../contexts/UserContext";
 import LogoImg from "./../assets/logo.png";
 
 export default function LoginTela() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useUser();
   const navigate = useNavigate();
 
   function fazerLogin(event) {
@@ -35,7 +35,7 @@ export default function LoginTela() {
 
   return (
     <Container>
-      <img src={LogoImg} alt="Logo" onClick={()=>{console.log(userInfo)}}/>
+      <img src={LogoImg} alt="Logo"/>
       <h1>TrackIt</h1>
       <form onSubmit={fazerLogin}>
         <input
