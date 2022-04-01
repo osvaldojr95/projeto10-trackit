@@ -5,44 +5,43 @@ import { useUser } from "../contexts/UserContext";
 import Header from "./Header"
 import Footer from "./Footer";
 import Habito from "./Habito";
+import AddHabito from "./AddHabito";
 
-export default function Histórico() {
-    const [loading, setLoading] = useState(false);
+export default function HabitosTela() {
     const [habitos, setHabitos] = useState([]);
+    const [renderizar, setRenderizar] = useState([]);
     const [novoHabito, setNovoHabito] = useState(false);
     const { userInfo } = useUser();
-    let adicionarHabito = toggle();
-    
-    function toggle(){
-        if(!novoHabito){
-            return (<></>);
-        }
-        else {
-            return (
-                <input/>
-            );
+    let lista = setLista();
+
+    function setLista() {
+        if (habitos.length === 0) {
+            return (<span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>);
+        } else {
+            return habitos.map((habito) => {
+                return <Habito
+                    key={habito.id}
+                    id={habito.id}
+                    name={habito.name}
+                    days={habito.days} 
+                    setRenderizar={setRenderizar}
+                    setNovoHabito={setNovoHabito}/>
+            });
         }
     }
 
     useEffect(() => {
+        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-        const config = {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`
-            }
-          }
         const promise = axios.get(URL, config);
-        setLoading(true);
         promise.then(response => {
             const { data } = response;
-            setHabitos([...data]);
-            setLoading(false);
+            setHabitos(data);
         });
         promise.catch(err => {
-            setLoading(false);
             console.log(err);
         });
-    },[]);
+    }, [renderizar]);
 
 
     return (
@@ -50,20 +49,16 @@ export default function Histórico() {
             <Header />
             <Topo>
                 <h5>Hábitos</h5>
-                <button onClick={()=>{(novoHabito ? setNovoHabito(false) : setNovoHabito(true))}}>+</button>
+                <button onClick={() => { (novoHabito ? setNovoHabito(false) : setNovoHabito(true)) }}>+</button>
             </Topo>
-            {adicionarHabito}
-            {habitos.map((habito) => {
-                return (
-                    <Habito id={habito.id} nome={habito.name} days={habito.days} />
-                )
-            })}
+            <AddHabito setRenderizar={setRenderizar} novoHabito={novoHabito} setNovoHabito={setNovoHabito} habitos={habitos} setHabitos={setHabitos} />
+            {lista}
             <Footer />
         </Container>
     );
 }
 
-const Container = styled.footer`
+const Container = styled.div`
     height: 100vh;
     width: 100%;
     padding: 70px 17px;
@@ -78,6 +73,7 @@ const Container = styled.footer`
         font-family: "Lexend Deca", sans-serif;
         font-size: 18px;
         color: var(--grey-dark);
+        line-height: 22px;
     }
 `;
 

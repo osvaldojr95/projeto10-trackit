@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Header from "./Header"
 import Footer from "./Footer";
 
-export default function Histórico() {
+export default function HistóricoTela() {
     return (
         <Container>
             <Header />
@@ -37,5 +37,6 @@ const Container = styled.footer`
         font-family: "Lexend Deca", sans-serif;
         font-size: 18px;
         color: var(--grey-dark);
+        line-height: 22px;
     }
 `;
