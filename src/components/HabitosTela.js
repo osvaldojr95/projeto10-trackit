@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { useUser } from "../contexts/UserContext";
@@ -9,24 +10,39 @@ import AddHabito from "./AddHabito";
 
 export default function HabitosTela() {
     const [habitos, setHabitos] = useState([]);
+    const [situacao, setSituacao] = useState("lista");
     const [renderizar, setRenderizar] = useState([]);
     const [novoHabito, setNovoHabito] = useState(false);
     const { userInfo } = useUser();
-    let lista = setLista();
+    const navigate = useNavigate();
+    let lista = setLista(situacao);
 
     function setLista() {
-        if (habitos.length === 0) {
-            return (<span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>);
-        } else {
-            return habitos.map((habito) => {
-                return <Habito
-                    key={habito.id}
-                    id={habito.id}
-                    name={habito.name}
-                    days={habito.days} 
-                    setRenderizar={setRenderizar}
-                    setNovoHabito={setNovoHabito}/>
-            });
+        switch (situacao) {
+            case "erro":
+                return <>
+                    <span>Ocorreu um erro ao carregar seus hábitos, por favor faça login novamente.</span>
+                    <BotaoSair onClick={()=>navigate("/")}>
+                            Sair
+                    </BotaoSair>
+                </>
+
+            case "nenhum":
+                return <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>;
+
+            case "lista":
+                return habitos.map((habito) => {
+                    return <Habito
+                        key={habito.id}
+                        id={habito.id}
+                        name={habito.name}
+                        days={habito.days}
+                        setRenderizar={setRenderizar}
+                        setNovoHabito={setNovoHabito} />
+                });
+
+            default:
+                return <span>default</span>
         }
     }
 
@@ -37,9 +53,10 @@ export default function HabitosTela() {
         promise.then(response => {
             const { data } = response;
             setHabitos(data);
+            setSituacao(data.length > 0 ? "lista" : "nenhum");
         });
         promise.catch(err => {
-            console.log(err);
+            setSituacao("erro");
         });
     }, [renderizar]);
 
@@ -102,4 +119,15 @@ const Topo = styled.div`
         color: var(--white);
         font-size: 24px;
     }
+`;
+
+const BotaoSair = styled.button`
+    height: 35px;
+    width: 80px;
+    background-color: var(--blue-ligth);
+    border: none;
+    border-radius: 4.5px;
+    color: var(--white);
+    font-size: 24px;
+    margin: 15px auto;
 `;
