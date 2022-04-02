@@ -22,8 +22,8 @@ export default function HabitosTela() {
             case "erro":
                 return <>
                     <span>Ocorreu um erro ao carregar seus hábitos, por favor faça login novamente.</span>
-                    <BotaoSair onClick={()=>navigate("/")}>
-                            Sair
+                    <BotaoSair onClick={() => navigate("/")}>
+                        Sair
                     </BotaoSair>
                 </>
 
@@ -117,6 +117,8 @@ const Topo = styled.div`
         border-radius: 4.5px;
         color: var(--white);
         font-size: 24px;
+        display: flex;
+        justify-content: center;
     }
 `;
 

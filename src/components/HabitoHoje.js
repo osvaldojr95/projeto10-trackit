@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useUser } from "../contexts/UserContext";
 import { useState } from "react";
+import CheckImg from "./../assets/check.png"
 
 export default function Habito(props) {
     const { id, name, done, currentSequence, highestSequence, setRenderizar } = props;
@@ -32,7 +33,7 @@ export default function Habito(props) {
             <h4>{name}</h4>
             <h5>Sequencia atual: <Verde cor={done}>{currentSequence} {currentSequence !== 1 ? "dias" : "dia"}</Verde></h5>
             <h5>Seu recorde: <Verde cor={recordeVerde}>{highestSequence} dias</Verde></h5>
-            <Check cor={done} onClick={(()=>toggle())}>OK</Check>
+            <Check cor={done} onClick={(()=>toggle())}><img src={CheckImg} alt="Check"/></Check>
         </Container>
     );
 }
@@ -81,6 +82,15 @@ const Check = styled.button`
     background-color: ${props => props.cor ? "#8FC549" : "#E7E7E7"};
     border: none;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        height: 28px;
+        width: 35px;
+    }
 `;
 
 const Verde = styled.span`
