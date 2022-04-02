@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components";
 
 import UserProvider from "../contexts/UserContext"
+import HabitosHojeProvider from "../contexts/HabitosHojeContext"
 
 import ResetCss from "../styles/resetCss";
 import GlobalStyle from "../styles/globalStyles";
@@ -18,15 +19,17 @@ export default function App() {
             <GlobalStyle />
             <Container>
                 <UserProvider>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<LoginTela />} />
-                            <Route path="/cadastro" element={<CadastroTela />} />
-                            <Route path="/habitos" element={<HabitosTela />} />
-                            <Route path="/hoje" element={<HojeTela />} />
-                            <Route path="/historico" element={<HistoricoTela />} />
-                        </Routes>
-                    </BrowserRouter>
+                    <HabitosHojeProvider>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/" element={<LoginTela />} />
+                                <Route path="/cadastro" element={<CadastroTela />} />
+                                <Route path="/habitos" element={<HabitosTela />} />
+                                <Route path="/hoje" element={<HojeTela />} />
+                                <Route path="/historico" element={<HistoricoTela />} />
+                            </Routes>
+                        </BrowserRouter>
+                    </HabitosHojeProvider>
                 </UserProvider>
             </Container>
         </>

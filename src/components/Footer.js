@@ -1,22 +1,24 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useHabitosHoje } from "../contexts/HabitosHojeContext";
 
 export default function Footer() {
+    const { porcentagem } = useHabitosHoje();
+    const navigate = useNavigate();
+
     return (
         <Container>
             <Link to="/habitos">Hábitos</Link>
-            <Link to="/hoje">
-                <div>
-                    <CircularProgressbar
-                        value={0.66}
-                        maxValue={1}
-                        text={`Hoje`}
-                        background
-                        backgroundPadding={6}
-                    />
-                </div>
-            </Link>
+            <div onClick={()=>navigate("/hoje")}>
+                <CircularProgressbar
+                    value={porcentagem}
+                    maxValue={1}
+                    text={`Hoje`}
+                    background
+                    backgroundPadding={6}
+                />
+            </div>
             <Link to="/historico">Histórico</Link>
         </Container>
     );
@@ -39,9 +41,11 @@ const Container = styled.footer`
 
     a {
         text-decoration: none;
+        text-align: center;
         font-family: "Lexend Deca", sans-serif;
         font-size: 18px;
         color: var(--blue-ligth);
+        width: 90px;
     }
 
     div {
@@ -63,6 +67,7 @@ const Container = styled.footer`
     }
     .CircularProgressbar-text {
         fill: var(--white);
+        font-size: 18px;
         dominant-baseline: middle;
         text-anchor: middle;
     }

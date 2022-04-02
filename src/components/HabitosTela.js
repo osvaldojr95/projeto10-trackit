@@ -85,7 +85,6 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
 
-
     span {
         font-family: "Lexend Deca", sans-serif;
         font-size: 18px;
