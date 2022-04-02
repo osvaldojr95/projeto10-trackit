@@ -26,6 +26,7 @@ const Container = styled.header`
     top: 0;
     left: 0;
     right: 0;
+    z-index:3;
 
     h2 {
         font-family: "Playball", cursive;
