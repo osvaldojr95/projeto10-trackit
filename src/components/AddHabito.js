@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
 import { useUser } from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function AddHabito(props) {
     const { setRenderizar, novoHabito, setNovoHabito } = props;
@@ -10,6 +11,13 @@ export default function AddHabito(props) {
     const [loading, setLoading] = useState(false);
     const [nome, setNome] = useState("");
     const [dias, setDias] = useState([]);
+    const loader = <ThreeDots
+        type="Puff"
+        color="#FFFFFF"
+        height={50}
+        width={50}
+        timeout={2000}
+    />
 
     function toggle(dia) {
         const index = dias.indexOf(dia);
@@ -31,14 +39,17 @@ export default function AddHabito(props) {
             days: dias
         }
         const promise = axios.post(URL, obj, config);
+        setLoading(true);
         promise.then(response => {
             const { data } = response;
             console.log(data);
             setRenderizar([]);
             setNovoHabito(false);
+            setLoading(false);
         });
         promise.catch(err => {
             console.log(err);
+            setLoading(false);
         });
     }
 
@@ -60,8 +71,8 @@ export default function AddHabito(props) {
                     })}
                 </Dias>
                 <Botoes>
-                    <span onClick={() => setNovoHabito(false) }>Cancelar</span>
-                    <button onClick={() => salvar() }>Salvar</button>
+                    <span onClick={() => setNovoHabito(false)}>Cancelar</span>
+                    <Botao disabled={loading} loading={loading} onClick={() => salvar()}>{(loading ? loader : "Salvar")}</Botao>
                 </Botoes>
             </Container>
         );
@@ -140,14 +151,19 @@ const Botoes = styled.div`
         margin-right: 23px;
     }
 
-    button {
-        height: 35px;
-        width: 84px;
-        color: ${props => props.cor};
-        font-size: 16px;
-        background-color: var(--blue-ligth);
-        border: none;
-        border-radius: 5px;
-        color: var(--white);
-    }
+`;
+
+const Botao = styled.button`
+    height: 35px;
+    width: 84px;
+    color: ${props => props.cor};
+    font-size: 16px;
+    background-color: ${props => props.loading ? "#95D9FF" : "#52B6FF"};
+    border: none;
+    border-radius: 5px;
+    color: var(--white);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `;

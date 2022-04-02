@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { post } from "axios";
 import styled from "styled-components";
+import { ThreeDots } from "react-loader-spinner";
 import LogoImg from "./../assets/logo.png";
 
 export default function CadastroTela() {
@@ -11,6 +12,13 @@ export default function CadastroTela() {
   const [foto, setFoto] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const loader = <ThreeDots
+      type="Puff"
+      color="#FFFFFF"
+      height={70}
+      width={70}
+      timeout={2000}
+  />
 
   function efetuarCadastro(event) {
     event.preventDefault();
@@ -73,7 +81,7 @@ export default function CadastroTela() {
           disabled={loading}
           onChange={(e) => setFoto(e.target.value)}
         />
-        <button type="submit">Cadastrar</button>
+        <Botao disabled={loading} loading={loading} type="submit">{(loading ? loader : "Cadastrar")}</Botao>
       </form>
       <Link to="/">
         Já tem uma conta? Faça login!
@@ -138,20 +146,24 @@ const Container = styled.div`
       color: var(--grey-ligth);
   }
 
-  button {
-    height: 45px;
-    width: 100%;
-    border-radius: 5px;
-    border: none;
-    background-color: var(--blue-ligth);
-    font-size: 21px;
-    color: var(--white);
-  }
-
   a {
     font-size: 14px;
     text-decoration: underline;
     color: var(--blue-ligth);
     margin-top: 30px;
   }
+`;
+
+const Botao = styled.button`
+  height: 45px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  background-color: ${props => props.loading ? "#95D9FF" : "#52B6FF"};
+  font-size: 21px;
+  color: var(--white);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;

@@ -2,68 +2,76 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { ThreeDots } from "react-loader-spinner";
 import { useUser } from "../contexts/UserContext";
 import LogoImg from "./../assets/logo.png";
 
 export default function LoginTela() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { userInfo, setUserInfo } = useUser();
-  const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [loading, setLoading] = useState(false);
+    const { userInfo, setUserInfo } = useUser();
+    const navigate = useNavigate();
+    const loader = <ThreeDots
+        type="Puff"
+        color="#FFFFFF"
+        height={70}
+        width={70}
+        timeout={2000}
+    />
 
-  function fazerLogin(event) {
-    event.preventDefault();
+    function fazerLogin(event) {
+        event.preventDefault();
 
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
-    const obj = { email: email, password: senha }
-    const promise = axios.post(URL, obj);
-    setLoading(true);
-    promise.then(response => {
-      setLoading(false);
-      const { data } = response;
-      const { name, id, image, token} = data;
-      setUserInfo({ ...userInfo, name, id, image, token })
-      navigate("/hoje");
-    });
-    promise.catch(err => {
-      if(err.response.status === 401){
-        alert("Email ou senha inseridos errados, tente novamente!");
-      } else {
-        alert("Ocorreu um erro não identificado no cadastro, por favor tente novamente!");
-      }
-      setLoading(false);
-    });
-  }
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+        const obj = { email: email, password: senha }
+        const promise = axios.post(URL, obj);
+        setLoading(true);
+        promise.then(response => {
+            const { data } = response;
+            const { name, id, image, token } = data;
+            setUserInfo({ ...userInfo, name, id, image, token })
+            navigate("/hoje");
+        });
+        promise.catch(err => {
+            if (err.response.status === 401) {
+                alert("Email ou senha inseridos errados, tente novamente!");
+            } else {
+                alert("Ocorreu um erro não identificado no cadastro, por favor tente novamente!");
+            }
+            setLoading(false);
+        });
+    }
 
-  return (
-    <Container>
-      <img src={LogoImg} alt="Logo"/>
-      <h1>TrackIt</h1>
-      <form onSubmit={fazerLogin}>
-        <input
-          type="email"
-          value={email}
-          placeholder="email"
-          required
-          disabled={loading}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          value={senha}
-          placeholder="senha"
-          required
-          disabled={loading}
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-      <Link to="/cadastro">
-        Não tem uma conta? Cadastre-se!
-      </Link>
-    </Container>
-  );
+    return (
+        <Container>
+
+            <img src={LogoImg} alt="Logo" />
+            <h1>TrackIt</h1>
+            <form onSubmit={fazerLogin}>
+                <input
+                    type="email"
+                    value={email}
+                    placeholder="email"
+                    required
+                    disabled={loading}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                    type="password"
+                    value={senha}
+                    placeholder="senha"
+                    required
+                    disabled={loading}
+                    onChange={(e) => setSenha(e.target.value)}
+                />
+                <Botao disabled={loading} loading={loading} type="submit">{(loading ? loader : "Login")}</Botao>
+            </form>
+            <Link to="/cadastro">
+                Não tem uma conta? Cadastre-se!
+            </Link>
+        </Container>
+    );
 }
 
 const Container = styled.main`
@@ -122,15 +130,6 @@ const Container = styled.main`
       color: var(--grey-ligth);
   }
 
-  button {
-    height: 45px;
-    width: 100%;
-    border-radius: 5px;
-    border: none;
-    background-color: var(--blue-ligth);
-    font-size: 21px;
-    color: var(--white);
-  }
 
   a {
     font-size: 14px;
@@ -138,4 +137,18 @@ const Container = styled.main`
     color: var(--blue-ligth);
     margin-top: 30px;
   }
+`;
+
+const Botao = styled.button`
+  height: 45px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  background-color: ${props => props.loading ? "#95D9FF" : "#52B6FF"};
+  font-size: 21px;
+  color: var(--white);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
