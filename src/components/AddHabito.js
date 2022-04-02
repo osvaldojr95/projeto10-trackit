@@ -62,6 +62,7 @@ export default function AddHabito(props) {
                 <Dias>
                     {listaDias.map((dia, index) => {
                         return <Dia
+                            disabled={loading}
                             key={index}
                             cor={(dias.indexOf(index) !== -1 ? branco : cinza)}
                             background={(dias.indexOf(index) !== -1 ? cinza : branco)}
@@ -90,7 +91,7 @@ const Container = styled.div`
     padding: 18px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     font-family: "Lexend Deca", sans-serif;
     margin-bottom: 15px;
@@ -104,6 +105,7 @@ const Container = styled.div`
         border: 1px solid var(--grey-ligth);
         border-radius: 5px;
         padding: 0 11px;
+        margin-bottom: 8px;
     }
 
     input::placeholder {
@@ -125,6 +127,7 @@ const Dias = styled.div`
     flex-direction: row;
     justify-content: flex-start ;
     align-items: center;
+    margin-bottom: 29px;
 `;
 
 const Dia = styled.button`
