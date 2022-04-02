@@ -58,7 +58,7 @@ export default function AddHabito(props) {
     } else {
         return (
             <Container>
-                <input value={nome} placeholder={"nome do hábito"} onChange={(e) => { setNome(e.target.value) }} />
+                <input disabled={loading} value={nome} placeholder={"nome do hábito"} onChange={(e) => { setNome(e.target.value) }} />
                 <Dias>
                     {listaDias.map((dia, index) => {
                         return <Dia
