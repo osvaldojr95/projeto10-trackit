@@ -27,9 +27,12 @@ export default function LoginTela() {
       navigate("/hoje");
     });
     promise.catch(err => {
-      // 401 (Provavelmente email e senha errados)
+      if(err.response.status === 401){
+        alert("Email ou senha inseridos errados, tente novamente!");
+      } else {
+        alert("Ocorreu um erro não identificado no cadastro, por favor tente novamente!");
+      }
       setLoading(false);
-      console.log(err);
     });
   }
 

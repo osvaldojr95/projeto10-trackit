@@ -20,16 +20,18 @@ export default function CadastroTela() {
     const promise = post(URL, obj);
     setLoading(true);
     promise.then(response => {
-      // ???
-      // const { data } = response;
       setLoading(false);
       navigate("/");
     });
     promise.catch(err => {
-      // 422 (Provavelmente a imagem está errada)
-      // 409 (Provavelmente ja existe essa conta)
+      if(err.response.status === 422){
+        alert("Informação inserida de forma errada, por favor insira novamente");
+      } else if (err.response.status === 409) {
+        alert("Essa conta já existe, por favor utilize outro email!");
+      } else {
+        alert("Ocorreu um erro não identificado no cadastro, por favor tente novamente!");
+      }
       setLoading(false);
-      console.log(err);
     });
 
   }
