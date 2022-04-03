@@ -51,7 +51,6 @@ const Container = styled.div`
     margin-bottom: 15px;
     font-family: "Lexend Deca", sans-serif;
     position: relative;
-    overflow-y: scroll;
     
     h4 {
         height: auto;

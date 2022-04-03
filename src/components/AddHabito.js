@@ -43,6 +43,8 @@ export default function AddHabito(props) {
         promise.then(response => {
             const { data } = response;
             setRenderizar([]);
+            setNome("");
+            setDias([]);
             setNovoHabito(false);
             setLoading(false);
         });
