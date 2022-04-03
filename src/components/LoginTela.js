@@ -49,7 +49,7 @@ export default function LoginTela() {
             <img src={LogoImg} alt="Logo" />
             <h1>TrackIt</h1>
             <form onSubmit={fazerLogin}>
-                <input
+                <Input
                     type="email"
                     value={email}
                     placeholder="email"
@@ -57,7 +57,7 @@ export default function LoginTela() {
                     disabled={loading}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <input
+                <Input
                     type="password"
                     value={senha}
                     placeholder="senha"
@@ -106,36 +106,35 @@ const Container = styled.main`
     padding: 0 6%;
   }
   
-  input {
-    height: 45px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid var(--grey-ligth);
-    margin-bottom: 6px;
-    padding: 0 10px;
-    font-size: 20px;
-    color: var(--grey-dark);
-  }
-
-  input::placeholder {
-    opacity: 1;
-    color: var(--grey-ligth);
-  }
-
-  input:-ms-input-placeholder {
-      color: var(--grey-ligth);
-  }
-
-  input::-ms-input-placeholder {
-      color: var(--grey-ligth);
-  }
-
-
   a {
     font-size: 14px;
     text-decoration: underline;
     color: var(--blue-ligth);
     margin-top: 30px;
+  }
+`;
+
+const Input = styled.input`
+  height: 45px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid var(--grey-ligth);
+  margin-bottom: 6px;
+  padding: 0 10px;
+  font-size: 20px;
+  color: var(--grey-dark);
+
+  placeholder {
+    opacity: 1;
+    color: var(--grey-ligth);
+  }
+
+  -ms-input-placeholder {
+      color: var(--grey-ligth);
+  }
+
+  -ms-input-placeholder {
+      color: var(--grey-ligth);
   }
 `;
 

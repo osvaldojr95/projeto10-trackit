@@ -42,13 +42,12 @@ export default function AddHabito(props) {
         setLoading(true);
         promise.then(response => {
             const { data } = response;
-            console.log(data);
             setRenderizar([]);
             setNovoHabito(false);
             setLoading(false);
         });
         promise.catch(err => {
-            console.log(err);
+            alert("Ocorreu um erro ao adicionar o hábito, por favor tente novamente!");
             setLoading(false);
         });
     }

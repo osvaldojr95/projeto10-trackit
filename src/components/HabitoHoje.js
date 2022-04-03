@@ -39,7 +39,7 @@ export default function Habito(props) {
 }
 
 const Container = styled.div`
-    height: 100vh;
+    height: auto;
     width: 100%;
     padding: 13px;
     display: flex;
