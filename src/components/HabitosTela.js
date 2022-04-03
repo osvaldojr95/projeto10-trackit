@@ -13,7 +13,7 @@ export default function HabitosTela() {
     const [situacao, setSituacao] = useState("lista");
     const [renderizar, setRenderizar] = useState([]);
     const [novoHabito, setNovoHabito] = useState(false);
-    const { userInfo } = useUser();
+    const { userInfo, setUserInfo } = useUser();
     const navigate = useNavigate();
     let lista = setLista(situacao);
 
@@ -22,7 +22,10 @@ export default function HabitosTela() {
             case "erro":
                 return <>
                     <span>Ocorreu um erro ao carregar seus hábitos, por favor faça login novamente.</span>
-                    <BotaoSair onClick={() => navigate("/")}>
+                    <BotaoSair onClick={() => {
+                        localStorage.removeItem('userInfo');
+                        navigate("/");
+                    }}>
                         Sair
                     </BotaoSair>
                 </>
@@ -47,7 +50,18 @@ export default function HabitosTela() {
     }
 
     useEffect(() => {
-        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        const infoSerializado = localStorage.getItem("userInfo");
+        let token = "";
+        if(userInfo.token !== undefined){
+            token = userInfo.token;
+        }
+        else if(infoSerializado){
+            const user = JSON.parse(infoSerializado);
+            token = user.token;
+            setUserInfo(user);
+        }
+
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
         const promise = axios.get(URL, config);
         promise.then(response => {

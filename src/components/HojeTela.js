@@ -13,7 +13,7 @@ import HabitoHoje from "./HabitoHoje";
 export default function HojeTela() {
     const [situacao, setSituacao] = useState("lista");
     const [renderizar, setRenderizar] = useState([]);
-    const { userInfo } = useUser();
+    const { userInfo, setUserInfo } = useUser();
     const { habitosHoje, setHabitosHoje, porcentagem } = useHabitosHoje();
     const progresso = setProgresso();
     const lista = setLista();
@@ -38,7 +38,10 @@ export default function HojeTela() {
             case "erro":
                 return <>
                     <Sub>Ocorreu um erro ao carregar seus hábitos, por favor faça login novamente.</Sub>
-                    <BotaoSair onClick={() => navigate("/")}>
+                    <BotaoSair onClick={() => {
+                        localStorage.removeItem('userInfo');
+                        navigate("/");
+                    }}>
                         Sair
                     </BotaoSair>
                 </>
@@ -61,7 +64,18 @@ export default function HojeTela() {
     }
 
     useEffect(() => {
-        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        const infoSerializado = localStorage.getItem("userInfo");
+        let token = "";
+        if(userInfo.token !== undefined){
+            token = userInfo.token;
+        }
+        else if(infoSerializado){
+            const user = JSON.parse(infoSerializado);
+            token = user.token;
+            setUserInfo(user);
+        }
+
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
         const promise = axios.get(URL, config);
         promise.then(response => {

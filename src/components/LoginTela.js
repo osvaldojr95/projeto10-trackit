@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -20,6 +20,15 @@ export default function LoginTela() {
         timeout={2000}
     />
 
+    useEffect(() => {
+        const infoSerializado = localStorage.getItem("userInfo");
+        if(infoSerializado){
+            const user = JSON.parse(infoSerializado);
+            setUserInfo(user);
+            navigate("/hoje");
+        }
+    }, []);
+
     function fazerLogin(event) {
         event.preventDefault();
 
@@ -30,7 +39,8 @@ export default function LoginTela() {
         promise.then(response => {
             const { data } = response;
             const { name, id, image, token } = data;
-            setUserInfo({ ...userInfo, name, id, image, token })
+            setUserInfo({ name, id, image, token });
+            localStorage.setItem("userInfo", JSON.stringify({ name, id, image, token }));
             navigate("/hoje");
         });
         promise.catch(err => {
