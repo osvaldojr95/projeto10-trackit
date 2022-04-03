@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 import { useUser } from "../contexts/UserContext";
 import { useHabitosHoje } from "../contexts/HabitosHojeContext";
 import axios from "axios";
@@ -13,9 +15,11 @@ export default function HojeTela() {
     const [renderizar, setRenderizar] = useState([]);
     const { userInfo } = useUser();
     const { habitosHoje, setHabitosHoje, porcentagem } = useHabitosHoje();
-    const navigate = useNavigate();
     const progresso = setProgresso();
     const lista = setLista();
+    dayjs.locale('pt-br');
+    const now = dayjs().format("dddd, DD/MM");
+    const navigate = useNavigate();
 
     function setProgresso() {
         if (porcentagem === 0) {
@@ -28,7 +32,6 @@ export default function HojeTela() {
             </>
         }
     }
-
 
     function setLista() {
         switch (situacao) {
@@ -75,7 +78,7 @@ export default function HojeTela() {
         <Container>
             <Header />
             <Topo>
-                <h2>Hoje</h2>
+                <h2>{now.charAt(0).toUpperCase() + now.slice(1)}</h2>
                 {progresso}
             </Topo>
             {lista}
@@ -100,8 +103,6 @@ const Sub = styled.h3`
     font-size: 18px;
     color: ${props => props.verde ? "#8FC549" : "#BABABA"};
 `;
-
-
 
 const Topo = styled.div`
     margin-bottom: 17px;
