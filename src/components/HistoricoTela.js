@@ -10,11 +10,13 @@ import 'react-calendar/dist/Calendar.css';
 import { useUser } from "../contexts/UserContext";
 import Header from "./Header"
 import Footer from "./Footer";
+import Detalhes from './Detalhes';
 
 export default function HistóricoTela() {
     const { userInfo, setUserInfo } = useUser();
     const [historico, setHistorico] = useState([]);
     const [situação, setSituação] = useState(true);
+    const [detalheOpen, setDetalheOpen] = useState(false);
     const [value, onChange] = useState(new Date());
     const calendario = setCalendario();
     const navigate = useNavigate();
@@ -112,6 +114,7 @@ export default function HistóricoTela() {
             <Header />
             <h5>Histórico</h5>
             {calendario}
+            <Detalhes show={detalheOpen} valor={value} lista={historico}/>
             <Footer />
         </Container>
     );
@@ -126,6 +129,7 @@ const Container = styled.footer`
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    overflow-y: scroll;
 
     h5 {
         font-family: "Lexend Deca", sans-serif;
